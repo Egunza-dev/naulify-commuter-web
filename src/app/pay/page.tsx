@@ -1,5 +1,5 @@
-// **1. Import the official PageProps type from Next.js**
-import type { PageProps } from 'next';
+// **1. CORRECTED Import of the official PageProps type**
+import type PageProps from 'next';
 import { getFareStages, FareStage } from '@/services/firebase';
 import { decode } from 'base-64';
 import PaymentFlow from '@/components/PaymentFlow'; 
@@ -7,10 +7,11 @@ import PaymentFlow from '@/components/PaymentFlow';
 /**
  * **2. Use the official PageProps type.**
  * This ensures our component's props are always compatible with Next.js.
- * The `searchParams` are part of this official type.
  */
-export default async function PayPage({ searchParams }: PageProps) {
-  const encodedData = searchParams?.data; // Added optional chaining for extra safety
+// The type `{ searchParams: { [key: string]: string | string[] | undefined } }` is a more robust
+// way to define the props, making our code independent of the specific `PageProps` name.
+export default async function PayPage({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
+  const encodedData = searchParams?.data;
 
   // --- 1. Data Validation and Decoding ---
   if (typeof encodedData !== 'string' || !encodedData) {
@@ -39,8 +40,6 @@ export default async function PayPage({ searchParams }: PageProps) {
   try {
     initialFareStages = await getFareStages(psvId);
   } catch (error) {
-    // Note: The ESLint warning about 'error' being unused is correct.
-    // We can ignore it for now as our config turns it into a warning, not an error.
     return <ErrorState message="Could not connect to the service to get fare stages." />;
   }
   
