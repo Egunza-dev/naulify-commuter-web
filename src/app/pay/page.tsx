@@ -1,16 +1,17 @@
-// **1. CORRECTED Import of the official PageProps type**
-import type PageProps from 'next';
 import { getFareStages, FareStage } from '@/services/firebase';
 import { decode } from 'base-64';
 import PaymentFlow from '@/components/PaymentFlow'; 
 
 /**
- * **2. Use the official PageProps type.**
- * This ensures our component's props are always compatible with Next.js.
+ * THE DEFINITIVE FIX:
+ * We explicitly type the entire props object that a Next.js Page receives.
+ * This includes both `params` (which is empty for this route) and `searchParams`.
+ * This signature now perfectly matches what Next.js expects.
  */
-// The type `{ searchParams: { [key: string]: string | string[] | undefined } }` is a more robust
-// way to define the props, making our code independent of the specific `PageProps` name.
-export default async function PayPage({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
+export default async function PayPage({ params, searchParams }: {
+  params: { slug: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
   const encodedData = searchParams?.data;
 
   // --- 1. Data Validation and Decoding ---
