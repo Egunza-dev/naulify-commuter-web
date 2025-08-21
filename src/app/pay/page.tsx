@@ -1,21 +1,16 @@
+// **1. Import the official PageProps type from Next.js**
+import type { PageProps } from 'next';
 import { getFareStages, FareStage } from '@/services/firebase';
 import { decode } from 'base-64';
-
-// We will create this client component in the next step.
-// For now, we can create a placeholder for it.
 import PaymentFlow from '@/components/PaymentFlow'; 
 
-// Props that Next.js automatically provides to Server Components
-interface PayPageProps {
-  searchParams: { [key: string]: string | string[] | undefined };
-}
-
 /**
- * This is a React Server Component. It runs on the server to handle the
- * initial page load for the /pay route.
+ * **2. Use the official PageProps type.**
+ * This ensures our component's props are always compatible with Next.js.
+ * The `searchParams` are part of this official type.
  */
-export default async function PayPage({ searchParams }: PayPageProps) {
-  const encodedData = searchParams.data;
+export default async function PayPage({ searchParams }: PageProps) {
+  const encodedData = searchParams?.data; // Added optional chaining for extra safety
 
   // --- 1. Data Validation and Decoding ---
   if (typeof encodedData !== 'string' || !encodedData) {
@@ -44,6 +39,8 @@ export default async function PayPage({ searchParams }: PayPageProps) {
   try {
     initialFareStages = await getFareStages(psvId);
   } catch (error) {
+    // Note: The ESLint warning about 'error' being unused is correct.
+    // We can ignore it for now as our config turns it into a warning, not an error.
     return <ErrorState message="Could not connect to the service to get fare stages." />;
   }
   
