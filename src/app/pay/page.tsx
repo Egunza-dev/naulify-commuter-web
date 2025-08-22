@@ -4,14 +4,12 @@ import PaymentFlow from '@/components/PaymentFlow';
 
 /**
  * THE DEFINITIVE FIX:
- * We explicitly type the entire props object for THIS specific page.
- * For a static route like '/pay', the `params` object is always empty `{}`.
- * This signature now perfectly matches what Next.js expects for this file.
+ * We remove ALL manual type annotations from the function's props.
+ * By simply destructuring `{ searchParams }`, we allow Next.js's
+ * TypeScript plugin to automatically and correctly infer the types.
+ * This completely avoids any conflict with the framework's internal types.
  */
-export default async function PayPage({ params, searchParams }: {
-  params: {}; // This page has no dynamic params, so it's an empty object.
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
+export default async function PayPage({ searchParams }: any) {
   const encodedData = searchParams?.data;
 
   // --- 1. Data Validation and Decoding ---
