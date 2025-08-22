@@ -52,8 +52,6 @@ export default function PaymentFlow({ psvId, plate, initialFareStages }: Payment
     };
 
     try {
-      // --- THE ONLY CHANGE IS HERE ---
-      // The URL is now a simple, relative path to our new Route Handler.
       const functionUrl = '/api/pay';
 
       const response = await fetch(functionUrl, {
@@ -70,7 +68,17 @@ export default function PaymentFlow({ psvId, plate, initialFareStages }: Payment
         throw new Error(responseData.error || 'An unknown error occurred on the server.');
       }
       
-      setResultData(responseData);
+      // --- THE CRITICAL FIX IS HERE ---
+      // Instead of passing the raw backend response, we construct the exact
+      // object that the SuccessTicket component needs.
+      const totalAmount = selectedRoutes.reduce((sum, route) => sum + route.fare * route.quantity, 0);
+      
+      setResultData({
+        ref: responseData.data.CheckoutRequestID, // Use the real ID from the API response
+        amount: totalAmount,                      // Use the locally calculated total
+        date: new Date().toISOString(),           // Use the current date
+      });
+      
       setStep('success');
 
     } catch (error: any) {
