@@ -1,17 +1,19 @@
 import { getFareStages, FareStage } from '@/services/firebase';
 import { decode } from 'base-64';
-import PaymentFlow from '@/components/PaymentFlow'; 
+import PaymentFlow from '@/components/PaymentFlow';
 
 /**
  * THE DEFINITIVE FIX:
- * We explicitly type the entire props object that a Next.js Page receives.
- * This includes both `params` (which is empty for this route) and `searchParams`.
- * This signature now perfectly matches what Next.js expects.
+ * We define the props shape directly and simply.
+ * A Next.js page receives a `searchParams` object where values
+ * can be a string or an array of strings. This is the correct,
+ * minimal type definition that will satisfy the compiler.
  */
-export default async function PayPage({ params, searchParams }: {
-  params: { slug: string };
+type PayPageProps = {
   searchParams: { [key: string]: string | string[] | undefined };
-}) {
+};
+
+export default async function PayPage({ searchParams }: PayPageProps) {
   const encodedData = searchParams?.data;
 
   // --- 1. Data Validation and Decoding ---
