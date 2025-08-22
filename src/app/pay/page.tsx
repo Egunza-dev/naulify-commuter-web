@@ -2,16 +2,12 @@ import { getFareStages, FareStage } from '@/services/firebase';
 import { decode } from 'base-64';
 import PaymentFlow from '@/components/PaymentFlow'; 
 
-/**
- * THE DEFINITIVE FIX:
- * We explicitly type the entire props object for THIS specific page.
- * For a static route like '/pay', the `params` object is always empty `{}`.
- * This signature now perfectly matches what Next.js expects for this file.
- */
-export default async function PayPage({ params, searchParams }: {
-  params: {}; // This page has no dynamic params, so it's an empty object.
+type PayPageProps = {
+  // We only define the props we actually use.
   searchParams: { [key: string]: string | string[] | undefined };
-}) {
+};
+
+export default async function PayPage({ searchParams }: PayPageProps) {
   const encodedData = searchParams?.data;
 
   // --- 1. Data Validation and Decoding ---
@@ -56,9 +52,6 @@ export default async function PayPage({ params, searchParams }: {
   );
 }
 
-/**
- * A simple component to display a full-page error message.
- */
 const ErrorState = ({ message }: { message: string }) => (
   <div className="flex flex-col items-center justify-center min-h-screen text-center">
     <h1 className="text-2xl font-bold text-red-500">Operation Failed</h1>
