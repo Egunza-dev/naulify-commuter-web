@@ -6,3 +6,18 @@ body {
   background-color: #1a1a1a; /* A slightly off-black for the background */
   color: #f0f0f0; /* A slightly off-white for text */
 }
+
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-in-out;
+}
