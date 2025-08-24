@@ -9,20 +9,17 @@ interface SuccessTicketProps {
 
 export const SuccessTicket = ({ plate, selectedRoutes, resultData }: SuccessTicketProps) => {
 
-  // Helper function to safely format the date from Firestore
   const getTransactionDate = () => {
-    // If resultData or paidAt doesn't exist, fallback to the current time
-    if (!resultData || !resultData.paidAt) {
-      return new Date().toLocaleString();
-    }
-    // Firestore Timestamps have a toDate() method when using the Admin SDK
-    // When passed to the client, they often serialize to an object with seconds/nanoseconds
+    if (!resultData || !resultData.paidAt) return new Date().toLocaleString();
     if (resultData.paidAt._seconds) {
       return new Date(resultData.paidAt._seconds * 1000).toLocaleString();
     }
-    // Fallback for other potential date formats
     return new Date(resultData.paidAt).toLocaleString();
   };
+
+  // Graceful fallbacks for data
+  const amountPaid = resultData?.amountPaid ?? 0;
+  const receiptNumber = resultData?.mpesaReceiptNumber ?? 'N/A';
 
   return (
     <div className="p-4 text-center space-y-4 animate-fadeIn">
@@ -35,16 +32,9 @@ export const SuccessTicket = ({ plate, selectedRoutes, resultData }: SuccessTick
       <div className="bg-gray-100 text-black p-4 rounded-lg text-left font-mono space-y-1">
         <p className="text-center font-sans font-bold text-lg mb-2">NAULIFY DIGITAL TICKET</p>
         <p><strong>Vehicle:</strong> {plate}</p>
-        
-        {/* UPDATED: Uses `amountPaid` from the Firestore document */}
-        <p><strong>Paid:</strong> KSH {(resultData.amountPaid || 0).toFixed(2)}</p>
-        
-        {/* UPDATED: Uses `mpesaReceiptNumber` from the Firestore document */}
-        <p><strong>Ref:</strong> {resultData.mpesaReceiptNumber}</p>
-        
-        {/* UPDATED: Uses the formatted date from the Firestore document */}
+        <p><strong>Paid:</strong> KSH {amountPaid.toFixed(2)}</p>
+        <p><strong>Ref:</strong> {receiptNumber}</p>
         <p><strong>Date:</strong> {getTransactionDate()}</p>
-        
         <hr className="my-2 border-gray-400"/>
         <p><strong>TICKETS BOUGHT:</strong></p>
         {selectedRoutes.map(route => (
