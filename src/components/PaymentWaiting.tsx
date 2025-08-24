@@ -47,7 +47,8 @@ export const PaymentWaiting = ({ phoneNumber, onCancel }: PaymentWaitingProps) =
 
       {/* Cancel Button */}
       <p className="text-sm text-gray-500">
-        If you don't receive a prompt, or if you made a mistake, you can cancel.
+        {/* THE FIX IS HERE: Replaced "don't" with "don&apos;t" */}
+        If you don&apos;t receive a prompt, or if you made a mistake, you can cancel.
       </p>
       <button
         onClick={onCancel}
