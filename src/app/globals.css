@@ -2,13 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  background-color: #1a1a1a; /* A slightly off-black for the background */
-  color: #f0f0f0; /* A slightly off-white for text */
+@layer base {
+  body {
+    /* Use the theme colors we defined in tailwind.config.ts */
+    @apply bg-background text-text-primary;
+  }
 }
 
-
-
+/* The animation keyframes remain unchanged */
 @keyframes fadeIn {
   from {
     opacity: 0;
