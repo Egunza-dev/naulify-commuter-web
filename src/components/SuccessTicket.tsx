@@ -13,7 +13,7 @@ export const SuccessTicket = ({ plate, selectedRoutes, resultData }: SuccessTick
   const getTransactionDate = () => {
     if (!resultData || !resultData.paidAt) return new Date().toLocaleString();
     if (resultData.paidAt._seconds) { // Firestore Timestamps serialize to { seconds, nanoseconds }
-      return new Date(resultData.paidAt.seconds * 1000).toLocaleString();
+      return new Date(resultData.paidAt._seconds * 1000).toLocaleString();
     }
     return new Date(resultData.paidAt).toLocaleString();
   };
