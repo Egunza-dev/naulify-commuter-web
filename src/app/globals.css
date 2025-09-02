@@ -1,8 +1,33 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  /*
+  The '@theme' block is the new way to configure your theme.
+  Color properties are migrated from your old 'extend' block.
+  */
+  --color-background: #1A1A1A;
+  --color-card: #2C2C2C;
+  --color-border: #404040;
+  --color-primary: #3B82F6;
+  --color-primary-hover: #2563EB;
+  --color-success: #16A34A;
+  --color-success-hover: #15803D;
+  --color-danger: #DC2626;
+  --color-text-primary: #F0F0F0;
+  --color-text-secondary: #A0A0A0;
+  
+  /*
+  Border radius properties are also defined as CSS variables.
+  Note that Tailwind v4 automatically handles the 'rem' conversion.
+  */
+  --radius-lg: 0.75rem;
+}
 
 @layer base {
+  /*
+  This ensures the body styles from the previous version of your
+  globals.css are still applied.
+  */
   body {
     @apply bg-background text-text-primary;
   }
@@ -20,4 +45,3 @@
 .animate-fadeIn {
   animation: fadeIn 0.5s ease-in-out;
 }
-@import "tailwindcss";
