@@ -26,7 +26,6 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  // THE FIX IS HERE: Changed React.Node to React.ReactNode
   children: React.ReactNode;
 }>) {
   return (
